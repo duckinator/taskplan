@@ -1,0 +1,6 @@
+status = [
+  "Lint",
+  "Linux container:python:3.8-slim",
+]
+
+delete_merged_branches = true

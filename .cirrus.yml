@@ -1,0 +1,23 @@
+# Allow compute credits usage for collaborators and anything pushed to the
+# master, staging, and trying branches. (So bors can use them.)
+use_compute_credits: $CIRRUS_USER_COLLABORATOR == 'true' || $CIRRUS_BRANCH == 'master' || $CIRRUS_BRANCH == 'staging' || $CIRRUS_BRANCH == 'trying'
+
+Lint_task:
+  container:
+    image: python:3.8-slim
+  install_script:
+    - pip3 install -U .[testing]
+  script:
+    - pylint --version
+    - bork run lint
+
+Linux_task:
+  allow_failures: $CIRRUS_TASK_NAME =~ '.*-rc-.*'
+  container:
+    matrix:
+      - image: python:3.8-slim
+  install_script:
+    - pip3 install -U .[testing]
+  script:
+    - python3 --version
+    - bork run test
